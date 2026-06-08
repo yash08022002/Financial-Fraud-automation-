@@ -99,7 +99,7 @@ Shows:
 
 ## 🔴 High Risk Alert
 
-<img src="./assetshigh-risk-alert.png.png" width="1000"/>
+<img src="./High-Risk Alert.png" width="1000"/>
 
 Automated alert generated for high-risk transactions.
 
