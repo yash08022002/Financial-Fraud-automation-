@@ -170,7 +170,7 @@ Chitkara University
 
 Fraud Analytics • Workflow Automation • Risk Monitoring
 
-GitHub: https://github.com/pachouriram123-a11y
+GitHub: (https://github.com/yash08022002)
 
 ---
 
