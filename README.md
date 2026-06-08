@@ -163,7 +163,7 @@ Workflow showing:
 
 # 👨‍💻 Developed By
 
-## Ram Pachori
+## Yash Gulati
 
 MBA (Applied Finance)  
 Chitkara University  
