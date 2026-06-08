@@ -72,17 +72,6 @@ Generate fraud notification emails.
 
 ---
 
-# 📊 Risk Classification
-
-| Risk Score | Status |
-|-----------|--------|
-| 0 | CLEAR |
-| 1 | LOW RISK |
-| 2–3 | MEDIUM RISK |
-| 4+ | HIGH RISK |
-
----
-
 # 📸 Project Screenshots
 
 ## Fraud Monitoring Dataset
