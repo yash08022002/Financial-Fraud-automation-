@@ -105,17 +105,17 @@ Automated alert generated for high-risk transactions.
 
 ---
 
-## 🟠 Medium Risk Alert
+## 🟠 Low Risk Auto Approved
 
-<img src="./assetsmedium-risk-alert.png.png" width="1000"/>
+<img src="Low Risk Auto Approved.png" width="1000"/>
 
-Automated review notification.
+Automated transaction approved.
 
 ---
 
 ## 🔄 n8n Workflow Automation
 
-<img src="./n8n project.png" width="1000"/>
+<img src="n8n Workflow.png" width="1000"/>
 
 Workflow showing:
 - Data extraction
