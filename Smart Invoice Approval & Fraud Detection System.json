@@ -1,0 +1,266 @@
+{
+  "name": "Smart Invoice Approval & Fraud Detection System",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "db30f012-b269-4083-87b3-67c11dc9af17",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1PiKYa6SJpTvvH55VbrlRihrfpczVY5zzRkbaJPZ710I/edit?gid=1494161404#gid=1494161404",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1494161404,
+          "mode": "list",
+          "cachedResultName": "Invoice_Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PiKYa6SJpTvvH55VbrlRihrfpczVY5zzRkbaJPZ710I/edit#gid=1494161404"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "688a0d6a-8e2e-4404-93a0-a27a303e3931",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ApEsExYv2xeKRsti",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "75f09206-94ae-4ac5-8e2c-06163cd60164",
+              "leftValue": "={{ $json.Amount }}",
+              "rightValue": 50000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "cebca8dc-0b9c-4a5c-9f80-5af39e6bd58c",
+              "leftValue": "={{ $json.Amount }}",
+              "rightValue": 100000,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "b97b3c5d-ae78-4dd5-9f8b-a2ea48282dd5",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "yashgulati098@gmail.com",
+        "subject": "=Finance Approval Required – Invoice from {{ $json.Vendor_Name}}",
+        "message": "=<h2 style=\"color:#1F4E79;\"> Finance Approval Request </h2>  <p>Dear Finance Team,</p>  <p> An invoice from  <b>{{ $json.Vendor_Name }}</b>  requires finance approval. </p>  <h3>Invoice Details</h3>  <table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse;\">  <tr> <td><b>Invoice ID</b></td> <td>{{ $json.Invoice_ID }}</td> </tr>  <tr> <td><b>Vendor Name</b></td> <td>{{ $json.Vendor_Name }}</td> </tr>  <tr> <td><b>Invoice Amount</b></td> <td>₹{{ $json.Amount }}</td> </tr>  <tr> <td><b>Department</b></td> <td>{{ $json.Department }}</td> </tr>  <tr> <td><b>Due Date</b></td> <td>{{ $json.Due_Date }}</td> </tr>  <tr> <td><b>Approval Level</b></td> <td>{{ $json.Approval_Level }}</td> </tr>  </table>  <br>  <p> Please review and approve this invoice as per company policy. </p>  <br>  <p> Regards,<br> <b>AI Finance Automation System</b> </p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "37c6e988-fc2f-46cf-9088-abd5e6761c79",
+      "name": "Send a message",
+      "webhookId": "c343d8b0-48f0-4f06-b7c1-e887a46d2be9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "B4930FDmrZHv6KfY",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4b079664-4405-4c43-bc9c-2cad9b8c2e7b",
+              "leftValue": "={{ $json.Amount }}",
+              "rightValue": 100000,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        624,
+        96
+      ],
+      "id": "5cea346c-eb3c-435c-a434-85a15d460460",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "sendTo": "yashgulati098@gmail.com",
+        "subject": "=Fraud Risk Alert – High Value Invoice from {{ $json.Vendor_Name }}",
+        "message": "=<h2 style=\"color:#B22222;\"> Fraud Risk & Compliance Alert </h2>  <p>Dear Compliance Team,</p>  <p> A high-value invoice from  <b>{{ $json.Vendor_Name }}</b>  has exceeded the defined financial threshold and requires immediate compliance review. </p>  <h3>Invoice Details</h3>  <table border=\"1\" cellpadding=\"8\" cellspacing=\"0\" style=\"border-collapse: collapse;\">  <tr> <td><b>Invoice ID</b></td> <td>{{ $json.Invoice_ID }}</td> </tr>  <tr> <td><b>Vendor Name</b></td> <td>{{ $json.Vendor_Name }}</td> </tr>  <tr> <td><b>Invoice Amount</b></td> <td>₹{{ $json.Amount }}</td> </tr>  <tr> <td><b>Department</b></td> <td>{{ $json.Department }}</td> </tr>  <tr> <td><b>Due Date</b></td> <td>{{ $json.Due_Date }}</td> </tr>  <tr> <td><b>Payment Mode</b></td> <td>{{ $json.Payment_Mode }}</td> </tr>  <tr> <td><b>GST Number</b></td> <td>{{ $json.GST_Number }}</td> </tr>  <tr> <td><b>Risk Status</b></td> <td style=\"color:red;\"><b>HIGH VALUE / FRAUD RISK</b></td> </tr>  </table>  <br>  <p> Reason for Alert: The invoice amount exceeds ₹1,00,000 and has been flagged for fraud risk assessment and compliance verification. </p>  <br>  <p> Immediate review is recommended before approval or payment processing. </p>  <br>  <p> Regards,<br> <b>AI Finance Automation System</b> </p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        0
+      ],
+      "id": "b5451f48-3437-46af-9630-b8c4bcfc0369",
+      "name": "Send a message1",
+      "webhookId": "c1e5c563-c96f-4add-a2e6-02ad95e72d7d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "B4930FDmrZHv6KfY",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1PiKYa6SJpTvvH55VbrlRihrfpczVY5zzRkbaJPZ710I/edit?gid=1494161404#gid=1494161404",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1494161404,
+          "mode": "list",
+          "cachedResultName": "Invoice_Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1PiKYa6SJpTvvH55VbrlRihrfpczVY5zzRkbaJPZ710I/edit#gid=1494161404"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        112
+      ],
+      "id": "28082df1-2444-409a-a35a-b84c8a5bdbd2",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ApEsExYv2xeKRsti",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ce0d9f91-c15b-4a02-a4de-2dbaef767632",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c88179a46ba83ad437f8c63fcca0eabdc97657b3bf5fa67e54c48ed255efa08c"
+  },
+  "id": "TECI00D9rDBhTQR5",
+  "tags": []
+}
