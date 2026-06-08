@@ -87,7 +87,7 @@ Generate fraud notification emails.
 
 ## Fraud Monitoring Dataset
 
-<img src="./assetsgoogle-sheet.png.png" width="1000"/>
+<img src="" width="1000"/>
 
 Shows:
 - Transaction dataset
